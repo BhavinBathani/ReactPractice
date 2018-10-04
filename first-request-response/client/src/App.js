@@ -1,33 +1,38 @@
 import React, { Component } from 'react';
 import './App.css';
 
+class ItemList extends Component {
+  render() {
+    const liValue = Object.keys(this.props.userDetails).map(key => <li>{this.props.userDetails[key]}</li>);
+    return (<ul>{liValue}</ul>);
+  }
+}
+
 class App extends Component {
   state = {
-    response: ''
+    user: ''
   };
 
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({ response: res.express }))
+      .then(res => this.setState({ user: res.user }))
       .catch(err => console.log(err));
   }
 
-  callApi = async () => {
+  callApi() {
     /*const response = await fetch('/api/hello');
     const body = await response.json();
-     if (response.status !== 200) throw Error(body.message);
     */
 
     const response = fetch('/api/hello').then(response => response.json());
-    const body = response.then(response => response);
 
-    return body;
+    return response;
   };
 
   render() {
     return (
-      <div className="App">
-        <p className="App-intro">{this.state.response}</p>
+      <div>
+        <ItemList userDetails = {this.state.user}/>
       </div>
     );
   }
